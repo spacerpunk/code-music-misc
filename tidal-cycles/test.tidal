@@ -1,0 +1,19 @@
+--this is a comment
+
+d1 $ n (slow 2 $ fmap (*2) $ run 2) # room 0.4 
+  # s "sine" 
+  # lfo "[0 1]*2"
+  # decay "[1 0.2]/2" 
+  # voice "[0.5 0]/8" 
+
+d1 $ s "bd*16?" 
+
+let patern = "c4 e4 f4 a4"
+
+d1 $ n "c4 e4 f4 a4 c4 e4 f4 a4" 
+  # s "midi" # midichan 1
+  # decay "[0 1]*2"
+
+hush
+
+panic

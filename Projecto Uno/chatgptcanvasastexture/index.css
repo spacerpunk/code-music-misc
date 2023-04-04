@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'JetBrainsMono';
+    src: url('JetBrainsMono-Medium.ttf');
+}
+
+body {
+    background-color: aqua;
+}
+
