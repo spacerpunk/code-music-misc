@@ -12,15 +12,35 @@ and so on
 */
 console.clear();
 
+//SCALES
 const gMajor = Tonal.Scale.get('G major').notes;
 const gChord = Tonal.Chord.get('G major').notes;
+
+//INSTRUMENTS
+const polySynth = new Tone.PolySynth(Tone.Synth).toDestination();
+polySynth.set({
+  oscillator: {
+    type:'sine'
+  },
+  envelope: {
+    attack:2,
+    decay: 4,
+    sustain: 1,
+    release: 2,
+  }
+})
+polySynth.volume.value = -10;
 
 //EFFECTS
 const reverb =  new Tone.Reverb();
 const lpFilter = new Tone.Filter();
 const mainGain = new Tone.Gain();
 
+//EFFECTS PARAMETERS
+
+
 //CONNECTIONS
+polySynth.connect(reverb);
 reverb.connect(lpFilter);
 lpFilter.connect(mainGain);
 mainGain.toDestination();
@@ -80,9 +100,9 @@ function mousePressed() {
   if (!isPlaying) {
     console.log('Tone Started');
     Tone.start();
-    Tone.Transport.start();
-    seq.start(0);
-    //pupi[4].triggerAttackRelease('C4', '8n');
+    //Tone.Transport.start();
+    //seq.start(0);
+    polySynth.triggerAttackRelease(['G2','D3','B3'],'1n');
     isPlaying = true;
   } else {
     console.log('Tone Stop');
