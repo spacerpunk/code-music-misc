@@ -11,6 +11,10 @@ arpegios take the [0] [2] [4] primera tercera quinta...
 and so on
 */
 console.clear();
+let bpm = 80;
+Tone.Transport.bpm.value = bpm;
+const timeSignature = [4,4];
+Tone.Transport.timeSignature = timeSignature;
 
 //SCALES
 const gMajor = Tonal.Scale.get('G major').notes;
@@ -31,13 +35,14 @@ polySynth.set({
 })
 polySynth.volume.value = -10;
 
+
 //EFFECTS
 const reverb =  new Tone.Reverb();
 const lpFilter = new Tone.Filter();
 const mainGain = new Tone.Gain();
 
 //EFFECTS PARAMETERS
-
+reverb.wet.value = 0.7;
 
 //CONNECTIONS
 polySynth.connect(reverb);
@@ -63,20 +68,28 @@ function makeSynths(count) {
     }
     let synth = new Tone.Synth({
       oscillator: { type: oscType },
-    }).toDestination();
+      envelope: {
+        attack: 2,
+        decay: 1,
+        sustain: 1,
+        release:1
+      }
+    }).connect(reverb);
+    synth.volume.value = -4
     synths.push(synth);
   }
   return synths;
 }
 
 const pupi = makeSynths(5);
+const bassSynths = makeSynths(3);
 
-const seq = new Tone.Sequence(function(time,note) {
+const bassNoteOne = new Tone.Sequence(function(time,note) {
   console.log(note);
   console.log(time);
   let rand = Math.floor(Math.random() * 5);
-  pupi[rand].triggerAttackRelease(note,'8n',time);
-}, ['G2','G3','G2','G3','G2','G3'], '8n');
+  pupi[rand].triggerAttackRelease(note,'1m',time);
+}, ['G2','B2','E2','C2'], '1m');
 
 /* CANVAS ELEMENT STUFF */
 
@@ -100,9 +113,10 @@ function mousePressed() {
   if (!isPlaying) {
     console.log('Tone Started');
     Tone.start();
-    //Tone.Transport.start();
-    //seq.start(0);
-    polySynth.triggerAttackRelease(['G2','D3','B3'],'1n');
+    
+    Tone.Transport.start();
+    bassNoteOne.start(0);
+    //polySynth.triggerAttackRelease(['G2','D3','B3'],'1m');
     isPlaying = true;
   } else {
     console.log('Tone Stop');
