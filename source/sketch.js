@@ -12,7 +12,7 @@ and so on
 */
 console.clear();
 const now = Tone.now();
-let bpm = 80;
+let bpm = 40;
 Tone.Transport.bpm.value = bpm;
 const timeSignature = [4, 4];
 Tone.Transport.timeSignature = timeSignature;
@@ -60,6 +60,9 @@ const notitas = [
   'D5',
 ];
 
+//SAMPLES
+//PADS:
+
 //INSTRUMENTS
 const polySynth = new Tone.PolySynth(Tone.Synth).toDestination();
 polySynth.set({
@@ -104,9 +107,6 @@ reverb.connect(lpFilter);
 lpFilter.connect(mainGain);
 mainGain.toDestination();
 
-console.log(gMajor);
-console.log(gChord);
-
 //FUNCTIONS
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -150,54 +150,63 @@ const bassSynthOne = makeSynths(5);
 const bassSynthTwo = makeSynths(5);
 const bassSynthThree = makeSynths(5);
 
-const baseNotesLoop = new Tone.Loop(function (time) {
-  console.log('Four Measures');
-  base();
-}, '4m');
+let randNum;
+let noteArray = [];
 
 function base() {
-  //I have the problem of having to regenerate the randArray number every time the function is called so I get new chords to play every 4 measures.
-  let randArray = getRndInteger(0, 2);
-  let noteArray = bassArrays[randArray];
-  const bassNoteOne = new Tone.Sequence(
-    function (time, note) {
-      console.log(note);
-      console.log(time);
-      let rand = Math.floor(Math.random() * 5);
-      bassSynthOne[rand].triggerAttackRelease(note, '1m', time);
-    },
-    noteArray[0],
-    '1m'
-  );
+  //I have the problem of having to regenerate the randNum number every time the function is called so I get new chords to play every 4 measures.
+  randNum = getRndInteger(0, 2);
+  noteArray = bassArrays[randNum];
+}
 
-  const bassNoteTwo = new Tone.Sequence(
-    function (time, note) {
-      console.log(note);
-      console.log(time);
-      let rand = Math.floor(Math.random() * 5);
-      bassSynthTwo[rand].triggerAttackRelease(note, '1m', time);
-    },
-    noteArray[1],
-    '1m'
-  );
+base();
 
-  const bassNoteThree = new Tone.Sequence(
-    function (time, note) {
-      console.log(note);
-      console.log(time);
-      let rand = Math.floor(Math.random() * 5);
-      bassSynthThree[rand].triggerAttackRelease(note, '1m', time);
-    },
-    noteArray[2],
-    '1m'
-  );
-  //bassNoteOne.stop(now);
-  //bassNoteTwo.stop(now);
-  //bassNoteThree.stop(now);
+const bassNoteOne = new Tone.Sequence(
+  function (time, note) {
+    console.log(note);
+    console.log(time);
+    let rand = Math.floor(Math.random() * 5);
+    bassSynthOne[rand].triggerAttackRelease(note, '1m', time);
+  },
+  noteArray[0],
+  '1m'
+);
+
+const bassNoteTwo = new Tone.Sequence(
+  function (time, note) {
+    console.log(note);
+    console.log(time);
+    let rand = Math.floor(Math.random() * 5);
+    bassSynthTwo[rand].triggerAttackRelease(note, '1m', time);
+  },
+  noteArray[1],
+  '1m'
+);
+
+const bassNoteThree = new Tone.Sequence(
+  function (time, note) {
+    console.log(note);
+    console.log(time);
+    let rand = Math.floor(Math.random() * 5);
+    bassSynthThree[rand].triggerAttackRelease(note, '1m', time);
+  },
+  noteArray[2],
+  '1m'
+);
+
+const baseNotesLoop = new Tone.Loop(function (time) {
+  console.log(time);
+  //console.log('Y AHI VA LA TERCERAA!');
+  base();
+  console.log('NUMBER ' + randNum);
+  console.log('NOTES ' + noteArray);
+  bassNoteOne.stop(now);
+  bassNoteTwo.stop(now);
+  bassNoteThree.stop(now);
   bassNoteOne.start(now);
   bassNoteTwo.start(now);
   bassNoteThree.start(now);
-}
+}, '4m');
 
 const notes = new Tone.Sequence(
   function (time, note) {

@@ -16,32 +16,49 @@ bass only takes the [0] index...
 arpegios take the [0] [2] [4] primera tercera quinta...
 and so on
 \*/
+
+BACKUP
+/\*
+Make a simple generative composition with Magenta and Tone. Sequence of base.
+Arpegiated chords and random melody given a set of
+pre composed melodies than can be chosen at random by the system.
+All in a p5js simple sketch with 8bits. Keep it simple and sounding nice.
+
+Arrays for chords...
+and then construct melody bass and arpegios from them using the index numbers...
+bass only takes the [0] index...
+arpegios take the [0] [2] [4] primera tercera quinta...
+and so on
+\*/
 console.clear();
+const now = Tone.now();
 let bpm = 80;
 Tone.Transport.bpm.value = bpm;
 const timeSignature = [4, 4];
 Tone.Transport.timeSignature = timeSignature;
 
-//SCALES
+//NOTE ARRAYS
 const gMajor = Tonal.Scale.get('G major').notes;
 const gChord = Tonal.Chord.get('G major').notes;
-const bassArrays = [
-[
+const array1 = [
 ['G2', 'B2', 'E2', 'C2'],
 ['D2', 'F#3', 'B2', 'G2'],
 ['B3', 'D4', 'G3', 'E3'],
-],
-[
-['G2', 'B2', 'E2', 'E2'],
-['D2', 'F#3', 'B2', 'B2'],
-['B3', 'D4', 'G3', 'A4'],
-],
-[
-['D2', 'E2', 'G2', 'C2'],
-['A2', 'B3', 'D2', 'G2'],
-['F#3', 'G3', 'B3', 'E3'],
-],
 ];
+const array2 = [
+['A2', 'G2', 'F#2', 'D2'],
+['E2', 'D2', 'D2', 'D2'],
+['C3', 'B3', 'A3', 'A3'],
+];
+const array3 = [
+['C2', 'E2', 'G2', 'C2'],
+['G2', 'B3', 'D2', 'G2'],
+['E3', 'G3', 'B3', 'E3'],
+];
+
+const bassArrays = [array1, array2, array3];
+
+//ARRAY NOTITAS SHOULD BE POPULATED IN A RANDOM WAY, AND LATER CREATED BY MAGENTA JS
 const notitas = [
 null,
 'G3',
@@ -107,9 +124,6 @@ reverb.connect(lpFilter);
 lpFilter.connect(mainGain);
 mainGain.toDestination();
 
-console.log(gMajor);
-console.log(gChord);
-
 //FUNCTIONS
 function getRndInteger(min, max) {
 return Math.floor(Math.random() \* (max - min + 1)) + min;
@@ -153,7 +167,10 @@ const bassSynthOne = makeSynths(5);
 const bassSynthTwo = makeSynths(5);
 const bassSynthThree = makeSynths(5);
 
-function base() {}
+function base() {
+//I have the problem of having to regenerate the randArray number every time the function is called so I get new chords to play every 4 measures.
+let randArray = getRndInteger(0, 2);
+let noteArray = bassArrays[randArray];
 const bassNoteOne = new Tone.Sequence(
 function (time, note) {
 console.log(note);
@@ -161,7 +178,7 @@ console.log(time);
 let rand = Math.floor(Math.random() \* 5);
 bassSynthOne[rand].triggerAttackRelease(note, '1m', time);
 },
-['G2', 'B2', 'E2', 'C2'],
+noteArray[0],
 '1m'
 );
 
@@ -172,7 +189,7 @@ console.log(time);
 let rand = Math.floor(Math.random() \* 5);
 bassSynthTwo[rand].triggerAttackRelease(note, '1m', time);
 },
-['D2', 'F#3', 'B2', 'G2'],
+noteArray[1],
 '1m'
 );
 
@@ -183,9 +200,16 @@ console.log(time);
 let rand = Math.floor(Math.random() \* 5);
 bassSynthThree[rand].triggerAttackRelease(note, '1m', time);
 },
-['B3', 'D4', 'G3', 'E3'],
+noteArray[2],
 '1m'
 );
+bassNoteOne.stop(now);
+bassNoteTwo.stop(now);
+bassNoteThree.stop(now);
+bassNoteOne.start(now + 1);
+bassNoteTwo.start(now + 1);
+bassNoteThree.start(now + 1);
+}
 
 const notes = new Tone.Sequence(
 function (time, note) {
@@ -194,8 +218,14 @@ console.log(note);
 randomNotesSynth.triggerAttackRelease(note, '8n', time);
 },
 notitas,
-'2n'
+'4n'
 );
+
+const baseNotesLoop = new Tone.Loop(function (time) {
+console.log(time);
+console.log('Y AHI VA LA TERCERAA!');
+base();
+}, '4m');
 
 /_ CANVAS ELEMENT STUFF _/
 
@@ -212,7 +242,7 @@ background(0);
 fill(255);
 noStroke();
 textAlign(CENTER, CENTER);
-text('source', width / 2, height / 2);
+text('MAKAKO', width / 2, height / 2);
 }
 
 function mousePressed() {
@@ -220,11 +250,8 @@ if (!isPlaying) {
 console.log('Tone Started');
 Tone.start();
 Tone.Transport.start();
-bassNoteOne.start(0);
-bassNoteTwo.start(0);
-bassNoteThree.start(0);
-notes.start(0);
-//polySynth.triggerAttackRelease(['G2','D3','B3'],'8n');
+baseNotesLoop.start(0);
+//notes.start(0);
 isPlaying = true;
 } else {
 console.log('Tone Stop');
