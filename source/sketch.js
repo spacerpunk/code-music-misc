@@ -1,8 +1,6 @@
 /*
-Make a simple generative composition with Magenta and Tone. Sequence of base.
-Arpegiated chords and random melody given a set of
-pre composed melodies than can be chosen at random by the system.
-All in a p5js simple sketch with 8bits. Keep it simple and sounding nice.
+A rotating Device with a screen in ThreeJS and in the screen the waveform from this generative track
+
 
 Arrays for chords...
 and then construct melody bass and arpegios from them using the index numbers...
@@ -20,23 +18,25 @@ Tone.Transport.timeSignature = timeSignature;
 //NOTE ARRAYS
 const gMajor = Tonal.Scale.get('G major').notes;
 const gChord = Tonal.Chord.get('G major').notes;
-const array1 = [
-  ['G2', 'B2', 'E2', 'C2'],
-  ['D2', 'F#3', 'B2', 'G2'],
-  ['B3', 'D4', 'G3', 'E3'],
-];
-const array2 = [
-  ['A2', 'G2', 'F#2', 'D2'],
-  ['E2', 'D2', 'D2', 'D2'],
-  ['C3', 'B3', 'A3', 'A3'],
-];
-const array3 = [
-  ['C2', 'E2', 'G2', 'C2'],
-  ['G2', 'B3', 'D2', 'G2'],
-  ['E3', 'G3', 'B3', 'E3'],
-];
 
-const bassArrays = [array1, array2, array3];
+const bassArrays =[
+  [
+    ['G2', 'B2', 'E2', 'C2'],
+    ['D2', 'F#3', 'B2', 'G2'],
+    ['B3', 'D4', 'G3', 'E3'],
+  ],
+  [
+    ['A2', 'G2', 'F#2', 'D2'],
+    ['E2', 'D2', 'D2', 'D2'],
+    ['C3', 'B3', 'A3', 'A3'],
+  ], 
+  [
+    ['C2', 'E2', 'G2', 'C2'],
+    ['G2', 'B3', 'D2', 'G2'],
+    ['E3', 'G3', 'B3', 'E3'],
+  ]
+]
+
 
 //ARRAY NOTITAS SHOULD BE POPULATED IN A RANDOM WAY, AND LATER CREATED BY MAGENTA JS
 const notitas = [
@@ -156,7 +156,7 @@ let noteArray = [];
 function base() {
   //I have the problem of having to regenerate the randNum number every time the function is called so I get new chords to play every 4 measures.
   randNum = getRndInteger(0, 2);
-  noteArray = bassArrays[randNum];
+  noteArray = bassArrays[randNum][randNum];
 }
 
 base();

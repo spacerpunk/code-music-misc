@@ -8,6 +8,18 @@ const mainWave = new Tone.Waveform();
 let mainGain;
 let isPlaying;
 
+/* FINAL TODO
+  - Make the melody choose from random arrays every time the page is refreshed
+  - Make the SineWave look nicer
+  - Change font and Intro Text: every time you refresh it it displays a different quote
+  - Add a random pluck synth that plays random notes every loop. (Some Null)
+  - Better controls of X + Y with the Mouse
+  - Make the synths oscillate their parameters in loops
+  - Generate new synths for the parts every time the page is refreshed, steal the function from the Source Project
+  - Publish 
+
+*/
+
 /* ------- PATTERN CREATION ------- */
 const bassPattern = new Tone.Pattern(
   (time, note) => {
@@ -95,7 +107,7 @@ violinOneSeq2.humanize = true;
 /* ------- SYNTH DEFINITIONS ------- */
 const synthOne = new Tone.Synth({
   oscillator: {
-    type: 'triangle',
+    type: 'sine',
   },
   envelope: {
     attack: 1,
@@ -119,7 +131,7 @@ const synthTwo = new Tone.Synth({
 
 const synthThree = new Tone.Synth({
   oscillator: {
-    type: 'square',
+    type: 'triangle',
   },
   envelope: {
     attack: 1,
@@ -177,6 +189,32 @@ const synthSubs = new Tone.Synth({
   },
 });
 
+function makeSynths(count) {
+  const synths = [];
+  for (let i = 0; i < count; i++) {
+    let oscType;
+    if (i < 2) {
+      oscType = 'sine';
+    } else if (i == 2) {
+      oscType = 'triangle';
+    } else {
+      oscType = 'square8';
+    }
+    let synth = new Tone.Synth({
+      oscillator: { type: oscType },
+      envelope: {
+        attack: 2,
+        decay: 1,
+        sustain: 1,
+        release: 1,
+      },
+    }).connect(masterGain);
+    synth.volume.value = -15;
+    synths.push(synth);
+  }
+  return synths;
+}
+
 //Effects
 let rightPanner = new Tone.Panner(0.5);
 let leftPanner = new Tone.Panner(-0.5);
@@ -221,6 +259,7 @@ synthTwo.connect(leftPanner);
 synthThree.connect(farRightPanner);
 synthFour.connect(farLeftPanner);
 synthFive.connect(melodyGain);
+synthFive.connect(mainWave);
 synthSix.connect(melodyHiGain);
 
 rightPanner.connect(gainRight);
@@ -248,7 +287,7 @@ subFilter.connect(comp);
 rightPanner.connect(waveOne);
 leftPanner.connect(waveTwo);
 gainFarRight.connect(waveThree);
-Tone.Master.connect(mainWave);
+//Tone.Master.connect(mainWave);
 comp.connect(masterRev);
 masterRev.connect(mainVolumeGain);
 mainVolumeGain.toDestination();
@@ -288,9 +327,10 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
   }
 
-function drawBuffer(wave,color){
+function drawBuffer(wave,color,weight){
+    strokeWeight(weight);
     stroke(color);
-        let buffer = wave.getValue(0);
+        let buffer = wave.getValue();
         //Look for point where samples go from negative to positive. Roots of the signal.
         let start = 0;
         for (let i = 1; i < buffer.length; i++) {
@@ -299,13 +339,13 @@ function drawBuffer(wave,color){
             break; // interrupts the for loop
           }
         }
-        let end = start + buffer.length / 2;
+        let end = start + buffer.length * 0.5;
         for (let i = start; i < end; i++) {
           let x1 = map(i - 1, start, end, 0, width);
           let y1 = map(buffer[i - 1], -1, 1, 0, height);
     
           let x2 = map(i, start, end, 0, width);
-          let y2 = map(buffer[i], -1, 1, 0, height);
+          let y2 = map(buffer[i], - 1, 1, 0, height);
           line(x1, y1, x2, y2);
         }
 }
@@ -313,10 +353,10 @@ function drawBuffer(wave,color){
 function draw(){
     background(0);
     if(isPlaying){
-        //drawBuffer(waveOne,255);
-        //drawBuffer(waveTwo,255);
-        //drawBuffer(waveThree,255);
-        drawBuffer(mainWave,255);
+        drawBuffer(mainWave,255,2);
+        drawBuffer(waveOne,'red',10);
+        drawBuffer(waveTwo,'green',6);
+        drawBuffer(waveThree,'blue',4);
         filter.frequency.value = map(mouseX , 0, width, 100, 4000);
         mainVolumeGain.gain.value = map(mouseY, height,0,0,5);
         
