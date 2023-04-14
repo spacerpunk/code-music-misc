@@ -2,6 +2,10 @@ Linkis:
 
 - https://github.com/PleatherStarfish/8BmySVG
 - https://hello-magenta.glitch.me/
+- https://medium.com/@alexbainter/generating-more-of-my-favorite-aphex-twin-track-cde9b7ecda3a
+- https://medium.com/@wisecobbler/4-ways-to-populate-an-array-in-javascript-836952aea79f
+- https://medium.com/geekculture/creating-a-step-sequencer-with-tone-js-32ea3002aaf5
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill
 
 SKETCH.JS BACKUP
 /\*
