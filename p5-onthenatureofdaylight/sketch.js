@@ -8,17 +8,30 @@ const mainWave = new Tone.Waveform();
 let mainGain;
 let isPlaying;
 
-/* FINAL TODO
-  - Make the melody choose from random arrays every time the page is refreshed
-  - Make the SineWave look nicer
-  - Change font and Intro Text: every time you refresh it it displays a different quote
-  - Add a random pluck synth that plays random notes every loop. (Some Null)
-  - Better controls of X + Y with the Mouse
-  - Make the synths oscillate their parameters in loops
-  - Generate new synths for the parts every time the page is refreshed, steal the function from the Source Project
-  - Publish 
+const quotes = ["Art illuminates the beauty of science.", 
+"All you have to decide is what to do with the time that is given to you.",
+"ON THE NATURE OF JAVA SCRIPT",
+"Somewhere, something incredible is waiting to be known.",
+"All reality is a game.",
+"We'd stared into the face of Death, and Death blinked first.",
+"Reality is that which, when you stop believing in it, doesn't go away."
+];
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/* FINAL TODO
+  - Make the SineWave look nicer
+  - Change font and Intro Text for Futura: every time you refresh it it displays a different quote - DONE
+  - Image sequence in Low Res playing in the BG (RadioheadNude)
+  - Add a random pluck synth that plays random notes every loop. (Some Null) - DONE
+  - Make the synths oscillate their parameters in loops 
+  - Publish
 */
+
 
 /* ------- PATTERN CREATION ------- */
 const bassPattern = new Tone.Pattern(
@@ -189,31 +202,6 @@ const synthSubs = new Tone.Synth({
   },
 });
 
-function makeSynths(count) {
-  const synths = [];
-  for (let i = 0; i < count; i++) {
-    let oscType;
-    if (i < 2) {
-      oscType = 'sine';
-    } else if (i == 2) {
-      oscType = 'triangle';
-    } else {
-      oscType = 'square8';
-    }
-    let synth = new Tone.Synth({
-      oscillator: { type: oscType },
-      envelope: {
-        attack: 2,
-        decay: 1,
-        sustain: 1,
-        release: 1,
-      },
-    }).connect(masterGain);
-    synth.volume.value = -15;
-    synths.push(synth);
-  }
-  return synths;
-}
 
 //Effects
 let rightPanner = new Tone.Panner(0.5);
@@ -234,24 +222,114 @@ melodyRev.wet.value = 1;
 rev.decay = 0.8;
 rev.wet.value = 0.2;
 const comp = new Tone.Compressor(-3, 2);
-let gainRight = new Tone.Gain(0.4);
-let gainLeft = new Tone.Gain(0.5);
-let gainFarRight = new Tone.Gain(0.14);
+let gainRight = new Tone.Gain(0.2);
+let gainLeft = new Tone.Gain(0.3);
+let gainFarRight = new Tone.Gain(0.11);
 let gainFarLeft = new Tone.Gain(0.1);
 let masterGain = new Tone.Gain(mainGain);
-let melodyGain = new Tone.Gain(0.65);
-let melodyHiGain = new Tone.Gain(0.8);
-let subGain = new Tone.Gain(0.3);
+let melodyGain = new Tone.Gain(0.5);
+let melodyHiGain = new Tone.Gain(0.6);
+let subGain = new Tone.Gain(0.2);
 //Filter
 let filter = new Tone.Filter(400, 'lowpass');
 let subFilter = new Tone.Filter(500, 'lowpass');
 
 let masterRev = new Tone.Reverb();
 masterRev.wet.value = 0.4;
-let masterVolume = 0.8;
+let masterVolume = 0.3;
 let mainVolumeGain = new Tone.Gain(masterVolume);
 
 
+//RANDOM NOTES
+
+//ARRAY NOTITAS SHOULD BE POPULATED IN A RANDOM WAY, AND LATER CREATED BY MAGENTA JS
+const scale = ['Bb3', 'C3', 'Db3', 'F3', 'Gb3', 'Ab3', null, null, null, null];
+const notitas = [
+  [null, 'Eb3', null, 'Bb4', 'Bb4', 'Eb4', null, null, 'Ab3', 'Bb3', null, 'F4', 'C4', null, 'Bb4', 'F4', null, 'Db4'],
+  [
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+   scale[getRandomInt(0,scale.length)],
+  ],
+  [
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+   ],
+   [
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+    scale[getRandomInt(0,scale.length)],
+   ],
+];
+
+function makeSynths(count) {
+  const synths = [];
+  for (let i = 0; i < count; i++) {
+    let oscType;
+    const filter = new Tone.Filter(500, 'lowpass');
+    if (i < 2) {
+      oscType = 'sine';
+    } else if (i == 2) {
+      oscType = 'triangle';
+    } else {
+      oscType = 'sine';
+    }
+    let synth = new Tone.Synth({
+      oscillator: { type: oscType },
+      envelope: {
+        attack: 0,
+        decay: 0.5,
+        sustain: 0.4,
+        release: 0.2,
+      },
+    }).connect(filter);
+    filter.connect(rev);
+    filter.connect(waveThree);
+    synth.volume.value = -20;
+    synths.push(synth);
+  }
+  return synths;
+}
+
+const randomSynth = makeSynths(5);
+let randomSeed = getRandomInt(0,3);
+
+const notes = new Tone.Sequence(
+  function (time, note) {
+    //console.log(time);
+    randomSeed = getRandomInt(0,3);
+    console.log(note);
+    let rand = Math.floor(Math.random() * 5);
+    randomSynth[rand].triggerAttackRelease(note, '16n', time);
+  },
+  notitas[randomSeed],
+  '16n'
+);
 
 /* ------- CONNECTIONS ------- */
 synthOne.connect(rightPanner);
@@ -286,25 +364,24 @@ subGain.connect(subFilter);
 subFilter.connect(comp);
 rightPanner.connect(waveOne);
 leftPanner.connect(waveTwo);
-gainFarRight.connect(waveThree);
+
 //Tone.Master.connect(mainWave);
 comp.connect(masterRev);
 masterRev.connect(mainVolumeGain);
 mainVolumeGain.toDestination();
 
 /* ------- PATTERNS ------- */
+notes.start(2);
 bassPattern.start(0);
 bassPattern.stop(4);
 bassPatternTwo.start(4);
 bassPatternTwo.stop(8);
 bassPattern.start(8);
-
 celloPattern.start(0);
 celloPattern.stop(4);
 celloPatternTwo.start(4);
 celloPatternTwo.stop(8);
 celloPattern.start(8);
-
 violaPattern.start(0);
 violaPattern.stop(4);
 violaPatternTwo.start(4);
@@ -315,11 +392,49 @@ violinOneSeq2.start(16);
 patternSubs.start(8);
 
 //* ------- START THE TIMELINE ------- */
-Tone.Transport.bpm.value = 15;
+Tone.Transport.bpm.value = 20;
+
+let img;
+let myFont;
+let imgSequence = []
+let currentFrame = 0;
+let rand = Math.floor(Math.random() * quotes.length);
+let particles = [];
+
+class Particle {
+  constructor() {
+    this.position = createVector(random(width), random(height));
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.radius = random(1, 5);
+  }
+
+  move() {
+    this.position.add(this.velocity);
+    if (this.position.x < 0 || this.position.x > width) {
+      this.velocity.x *= -1;
+    }
+    if (this.position.y < 0 || this.position.y > height) {
+      this.velocity.y *= -1;
+    }
+  }
+
+  draw() {
+    let alpha = map(this.radius, 1, 5, 20, 220); // map the radius to a transparency value
+    let color = (255, alpha); // create a color with the mapped transparency value
+    fill(color);
+    noStroke();
+    circle(this.position.x, this.position.y, this.radius * 2);
+  }
+}
+
 
 function setup(){
-    createCanvas(windowWidth, windowHeight);
-    isPlaying = false;
+  background(0);
+  createCanvas(windowWidth, windowHeight);
+  for (let i = 0; i < 100; i++) {
+    particles.push(new Particle());
+  }
+  isPlaying = false;
 }
 
 // On window resize, update the canvas size
@@ -341,37 +456,66 @@ function drawBuffer(wave,color,weight){
         }
         let end = start + buffer.length * 0.5;
         for (let i = start; i < end; i++) {
-          let x1 = map(i - 1, start, end, 0, width);
-          let y1 = map(buffer[i - 1], -1, 1, 0, height);
-    
-          let x2 = map(i, start, end, 0, width);
-          let y2 = map(buffer[i], - 1, 1, 0, height);
-          line(x1, y1, x2, y2);
+          // let x1 = map(i - 1, start, end, 0, width);
+          // let y1 = map(buffer[i - 1], -1, 1, 0, height);
+          // let x2 = map(i, start, end, 0, width);
+          // let y2 = map(buffer[i], - 1, 1, 0, height);
+          let x1 = map(i - 1, start, end, 0, height);
+          let y1 = map(buffer[i - 1], -1, 1, 0, width);
+          let x2 = map(i, start, end, 0, height);
+          let y2 = map(buffer[i], - 1, 1, 0, width);
+          line(y1, x1, y2, x2);
         }
 }
 
+
+function preload() {
+  let frames = 10;
+  // //load images
+  // for (let i=0; i < frames; i++)
+  // {
+  //   let filename = "image_" + i + ".png";
+  //   imgSequence[i] = loadImage(filename);
+  // }
+  myFont = loadFont('./ad.otf');  
+}
+
 function draw(){
+    let c1 = color(255, 0, 0); // red
+    let c2 = color(0, 0, 0); // blue
     background(0);
+    particles.forEach((particle) => {
+      particle.move();
+      particle.draw();
+    });
     if(isPlaying){
         drawBuffer(mainWave,255,2);
-        drawBuffer(waveOne,'red',10);
-        drawBuffer(waveTwo,'green',6);
-        drawBuffer(waveThree,'blue',4);
+        drawBuffer(waveOne,200,10);
+        drawBuffer(waveTwo,180,6);
+        drawBuffer(waveThree,130,4);
         filter.frequency.value = map(mouseX , 0, width, 100, 4000);
-        mainVolumeGain.gain.value = map(mouseY, height,0,0,5);
-        
-
-        
+        mainVolumeGain.gain.value = map(mouseY, height,0,0,1);      
     } else {
-        background(0);
-        fill(255);
+        //background(0);
+        fill(220);
         noStroke();
         textAlign(CENTER, CENTER);
-        text('CLICKEA PARA ESCUCHAR', width / 2, height / 2);
-        text('El Mouse Controla Filtro y Volumen', width / 2, height / 2 + 20);
-        text('No te salgas de los bordes', width / 2, height / 2 + 40);
-
+        textFont(myFont);
+        textSize(42);
+        text(quotes[rand].toUpperCase(), width / 2, height / 2 - 10);
+        textSize(30);
+        text('Click Anywhere', width / 2, height / 2 + 50);
     }
+}
+
+function gradient(c1, c2) {
+  // Calculate the gradient color based on the current x-position of the line
+  let gradientColor = [];
+  for (let x = 0; x <= width; x++) {
+    let interp = map(x, 0, width, 0, 1);
+    gradientColor[x] = lerpColor(c1, c2, interp);
+  }
+  return gradientColor;
 }
 
 function mousePressed(){

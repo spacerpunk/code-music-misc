@@ -212,7 +212,8 @@ const notes = new Tone.Sequence(
   function (time, note) {
     console.log(time);
     console.log(note);
-    randomNotesSynth.triggerAttackRelease(note, '8n', time);
+    let rand = Math.floor(Math.random() * 5);
+    bassSynthOne[rand].triggerAttackRelease(note, '8n', time);
   },
   notitas,
   '4n'
