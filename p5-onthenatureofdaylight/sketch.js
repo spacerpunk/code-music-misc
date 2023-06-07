@@ -8,13 +8,14 @@ const mainWave = new Tone.Waveform();
 let mainGain;
 let isPlaying;
 
-const quotes = ["Art illuminates the beauty of science.", 
-"All you have to decide is what to do with the time that is given to you.",
-"ON THE NATURE OF JAVA SCRIPT",
-"Somewhere, something incredible is waiting to be known.",
-"All reality is a game.",
-"We'd stared into the face of Death, and Death blinked first.",
-"Reality is that which, when you stop believing in it, doesn't go away."
+const quotes = [
+  'Art illuminates the beauty of science.',
+  'All you have to decide is what to do with the time that is given to you.',
+  'ON THE NATURE OF JAVA SCRIPT',
+  'Somewhere, something incredible is waiting to be known.',
+  'All reality is a game.',
+  "We'd stared into the face of Death, and Death blinked first.",
+  "Reality is that which, when you stop believing in it, doesn't go away.",
 ];
 
 function getRandomInt(min, max) {
@@ -31,7 +32,6 @@ function getRandomInt(min, max) {
   - Make the synths oscillate their parameters in loops 
   - Publish
 */
-
 
 /* ------- PATTERN CREATION ------- */
 const bassPattern = new Tone.Pattern(
@@ -202,7 +202,6 @@ const synthSubs = new Tone.Synth({
   },
 });
 
-
 //Effects
 let rightPanner = new Tone.Panner(0.5);
 let leftPanner = new Tone.Panner(-0.5);
@@ -239,52 +238,70 @@ masterRev.wet.value = 0.4;
 let masterVolume = 0.3;
 let mainVolumeGain = new Tone.Gain(masterVolume);
 
-
 //RANDOM NOTES
 
 //ARRAY NOTITAS SHOULD BE POPULATED IN A RANDOM WAY, AND LATER CREATED BY MAGENTA JS
 const scale = ['Bb3', 'C3', 'Db3', 'F3', 'Gb3', 'Ab3', null, null, null, null];
 const notitas = [
-  [null, 'Eb3', null, 'Bb4', 'Bb4', 'Eb4', null, null, 'Ab3', 'Bb3', null, 'F4', 'C4', null, 'Bb4', 'F4', null, 'Db4'],
   [
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
-   scale[getRandomInt(0,scale.length)],
+    null,
+    'Eb3',
+    null,
+    'Bb4',
+    'Bb4',
+    'Eb4',
+    null,
+    null,
+    'Ab3',
+    'Bb3',
+    null,
+    'F4',
+    'C4',
+    null,
+    'Bb4',
+    'F4',
+    null,
+    'Db4',
   ],
   [
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-   ],
-   [
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-    scale[getRandomInt(0,scale.length)],
-   ],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+  ],
+  [
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+  ],
+  [
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+    scale[getRandomInt(0, scale.length)],
+  ],
 ];
 
 function makeSynths(count) {
@@ -317,12 +334,12 @@ function makeSynths(count) {
 }
 
 const randomSynth = makeSynths(5);
-let randomSeed = getRandomInt(0,3);
+let randomSeed = getRandomInt(0, 3);
 
 const notes = new Tone.Sequence(
   function (time, note) {
     //console.log(time);
-    randomSeed = getRandomInt(0,3);
+    randomSeed = getRandomInt(0, 3);
     console.log(note);
     let rand = Math.floor(Math.random() * 5);
     randomSynth[rand].triggerAttackRelease(note, '16n', time);
@@ -355,9 +372,8 @@ melodyHiGain.connect(melodyRev);
 melodyRev.connect(vibrato);
 vibrato.connect(filter);
 rev.connect(chorus);
-chorus.connect(filter)
+chorus.connect(filter);
 filter.connect(comp);
-
 
 synthSubs.connect(subGain);
 subGain.connect(subFilter);
@@ -396,7 +412,7 @@ Tone.Transport.bpm.value = 20;
 
 let img;
 let myFont;
-let imgSequence = []
+let imgSequence = [];
 let currentFrame = 0;
 let rand = Math.floor(Math.random() * quotes.length);
 let particles = [];
@@ -427,8 +443,7 @@ class Particle {
   }
 }
 
-
-function setup(){
+function setup() {
   background(0);
   createCanvas(windowWidth, windowHeight);
   for (let i = 0; i < 100; i++) {
@@ -439,35 +454,34 @@ function setup(){
 
 // On window resize, update the canvas size
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-  }
-
-function drawBuffer(wave,color,weight){
-    strokeWeight(weight);
-    stroke(color);
-        let buffer = wave.getValue();
-        //Look for point where samples go from negative to positive. Roots of the signal.
-        let start = 0;
-        for (let i = 1; i < buffer.length; i++) {
-          if (buffer[i - 1] < 0 && buffer[i] >= 0) {
-            start = i;
-            break; // interrupts the for loop
-          }
-        }
-        let end = start + buffer.length * 0.5;
-        for (let i = start; i < end; i++) {
-          // let x1 = map(i - 1, start, end, 0, width);
-          // let y1 = map(buffer[i - 1], -1, 1, 0, height);
-          // let x2 = map(i, start, end, 0, width);
-          // let y2 = map(buffer[i], - 1, 1, 0, height);
-          let x1 = map(i - 1, start, end, 0, height);
-          let y1 = map(buffer[i - 1], -1, 1, 0, width);
-          let x2 = map(i, start, end, 0, height);
-          let y2 = map(buffer[i], - 1, 1, 0, width);
-          line(y1, x1, y2, x2);
-        }
+  resizeCanvas(windowWidth, windowHeight);
 }
 
+function drawBuffer(wave, color, weight) {
+  strokeWeight(weight);
+  stroke(color);
+  let buffer = wave.getValue();
+  //Look for point where samples go from negative to positive. Roots of the signal.
+  let start = 0;
+  for (let i = 1; i < buffer.length; i++) {
+    if (buffer[i - 1] < 0 && buffer[i] >= 0) {
+      start = i;
+      break; // interrupts the for loop
+    }
+  }
+  let end = start + buffer.length * 0.5;
+  for (let i = start; i < end; i++) {
+    // let x1 = map(i - 1, start, end, 0, width);
+    // let y1 = map(buffer[i - 1], -1, 1, 0, height);
+    // let x2 = map(i, start, end, 0, width);
+    // let y2 = map(buffer[i], - 1, 1, 0, height);
+    let x1 = map(i - 1, start, end, 0, height);
+    let y1 = map(buffer[i - 1], -1, 1, 0, width);
+    let x2 = map(i, start, end, 0, height);
+    let y2 = map(buffer[i], -1, 1, 0, width);
+    line(y1, x1, y2, x2);
+  }
+}
 
 function preload() {
   let frames = 10;
@@ -477,35 +491,35 @@ function preload() {
   //   let filename = "image_" + i + ".png";
   //   imgSequence[i] = loadImage(filename);
   // }
-  myFont = loadFont('./ad.otf');  
+  myFont = loadFont('./ad.otf');
 }
 
-function draw(){
-    let c1 = color(255, 0, 0); // red
-    let c2 = color(0, 0, 0); // blue
-    background(0);
-    particles.forEach((particle) => {
-      particle.move();
-      particle.draw();
-    });
-    if(isPlaying){
-        drawBuffer(mainWave,255,2);
-        drawBuffer(waveOne,200,10);
-        drawBuffer(waveTwo,180,6);
-        drawBuffer(waveThree,130,4);
-        filter.frequency.value = map(mouseX , 0, width, 100, 4000);
-        mainVolumeGain.gain.value = map(mouseY, height,0,0,1);      
-    } else {
-        //background(0);
-        fill(220);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textFont(myFont);
-        textSize(42);
-        text(quotes[rand].toUpperCase(), width / 2, height / 2 - 10);
-        textSize(30);
-        text('Click Anywhere', width / 2, height / 2 + 50);
-    }
+function draw() {
+  let c1 = color(255, 0, 0); // red
+  let c2 = color(0, 0, 0); // blue
+  background(0);
+  particles.forEach((particle) => {
+    particle.move();
+    particle.draw();
+  });
+  if (isPlaying) {
+    drawBuffer(mainWave, 255, 2);
+    drawBuffer(waveOne, 200, 10);
+    drawBuffer(waveTwo, 180, 6);
+    drawBuffer(waveThree, 130, 4);
+    filter.frequency.value = map(mouseX, 0, width, 100, 4000);
+    mainVolumeGain.gain.value = map(mouseY, height, 0, 0, 1);
+  } else {
+    //background(0);
+    fill(220);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textFont(myFont);
+    textSize(42);
+    text(quotes[rand].toUpperCase(), width / 2, height / 2 - 10);
+    textSize(30);
+    text('Click Anywhere', width / 2, height / 2 + 50);
+  }
 }
 
 function gradient(c1, c2) {
@@ -518,21 +532,20 @@ function gradient(c1, c2) {
   return gradientColor;
 }
 
-function mousePressed(){
-      if(!isPlaying){
-      console.log('Tone started');
-      Tone.start();
-      Tone.Transport.start();
-      isPlaying = true;
+function mousePressed() {
+  if (!isPlaying) {
+    console.log('Tone started');
+    Tone.start();
+    Tone.Transport.start();
+    isPlaying = true;
   } else {
-      console.log('Stop Transport');
-      Tone.Transport.stop();
-      isPlaying = false;
-      synthOne.triggerRelease(now + 1);
-      synthTwo.triggerRelease(now + 1);
-      synthThree.triggerRelease(now + 1);
-      synthFour.triggerRelease(now + 1);
-      synthSubs.triggerRelease(now + 1);
+    console.log('Stop Transport');
+    Tone.Transport.stop();
+    isPlaying = false;
+    synthOne.triggerRelease(now + 1);
+    synthTwo.triggerRelease(now + 1);
+    synthThree.triggerRelease(now + 1);
+    synthFour.triggerRelease(now + 1);
+    synthSubs.triggerRelease(now + 1);
   }
-
 }
